@@ -21,7 +21,7 @@ class PostListener
         $url = (string)$config->url();
 
         $d_url = sprintf("%s/d/%d-%s", $url, $discussion_id, $discussion_slug);
-        $content = sprintf("%s在<%s>板块发布了帖子：\n<%s>\n 详情请点击下面的链接：\n%s",
+        $content = sprintf("%s在《%s》板块发布了帖子：\n%s\n 详情请点击下面的链接：\n%s",
             $user_name, $discussion_tag, $discussion_title, $d_url);
         $wechat_push = new WechatPush([
             "content" => $content,
@@ -33,7 +33,7 @@ class PostListener
             "client_id" => 1,
             "type" => "MT_SEND_TEXTMSG",
             "data" => array(
-                "to_wxid" => '25344621039@chatroom',
+                "to_wxid" => '24006113632@chatroom',
                 "content" => $content
             )
         );
