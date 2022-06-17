@@ -29,12 +29,18 @@ class PostListener
         ]);
         $wechat_push->save();
 
+        $this->pushmsg("24006113632@chatroom", $content);
+        $this->pushmsg("23935830943@chatroom", $content);
+    }
+
+    private function pushmsg($wxid, $msg)
+    {
         $request_data = array(
             "client_id" => 1,
             "type" => "MT_SEND_TEXTMSG",
             "data" => array(
-                "to_wxid" => '24006113632@chatroom',
-                "content" => $content
+                "to_wxid" => $wxid,
+                "content" => $msg
             )
         );
 
