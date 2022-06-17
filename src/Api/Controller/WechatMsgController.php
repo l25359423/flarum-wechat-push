@@ -22,7 +22,7 @@ class WechatMsgController extends AbstractListController
         $data = json_decode(file_get_contents("php://input"), true);
         $msg = $data['data']['msg'];
         $room_wxid = $data['data']['room_wxid'];
-        $default_reply_content = "哎呀，你说的这个钢镚儿似乎还不太懂，你可以告诉舒克大大，让它来教教我~";
+        $default_reply_content = "哎呀，你说的这个钢镚儿似乎还不太懂，你可以告诉舒克大大，让他来教教我~";
 
 
         // 热门微博
