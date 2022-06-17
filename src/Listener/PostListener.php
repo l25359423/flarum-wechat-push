@@ -10,27 +10,40 @@ class PostListener
     public function handle(Posted $event)
     {
         $data = json_decode(json_encode($event), true);
+        echo json_encode($data);
         $user_name = $data['post']['user']['nickname']
             ? : $data['post']['user']['username'];
         $discussion_id = $data['post']['discussion']['id'];
         $discussion_title = $data['post']['discussion']['title'];
         $discussion_slug = $data['post']['discussion']['slug'];
         $discussion_tag = $data['post']['discussion']['tags'][0]['name'];
+        $type = $data['post']['discussion']['first_post_id'] ? 'comment' : 'post';
+        $last_post_number = $data['post']['discussion']['last_post_number'];
+        $discussion_content = $data['post']['content'];
 
         $config = app('flarum.config');
         $url = (string)$config->url();
 
-        $d_url = sprintf("%s/d/%d-%s", $url, $discussion_id, $discussion_slug);
-        $content = sprintf("%s在《%s》板块发布了帖子：\n%s\n详情请点击下面的链接：\n%s",
-            $user_name, $discussion_tag, $discussion_title, $d_url);
+        if ($type == 'post')
+        {
+            $d_url = sprintf("%s/d/%d-%s", $url, $discussion_id, $discussion_slug);
+            $content = sprintf("%s在《%s》板块发布了帖子：\n%s\n详情请点击下面的链接：\n%s",
+                $user_name, $discussion_tag, $discussion_title, $d_url);
+        } else {
+            $d_url = sprintf("%s/d/%d-%s/%d", $url, $discussion_id, $discussion_slug, $last_post_number);
+            $content = sprintf("%s在《%s》回复了帖子说：\n%s\n详情请点击下面的链接：\n%s",
+                $user_name, $discussion_title, strip_tags($discussion_content), $d_url);
+        }
+
+        echo $content;
         $wechat_push = new WechatPush([
             "content" => $content,
             "url"  => $d_url
         ]);
         $wechat_push->save();
 
-        $this->pushmsg("24006113632@chatroom", $content);
-        $this->pushmsg("23935830943@chatroom", $content);
+//        $this->pushmsg("24006113632@chatroom", $content);
+//        $this->pushmsg("23935830943@chatroom", $content);
     }
 
     private function pushmsg($wxid, $msg)
