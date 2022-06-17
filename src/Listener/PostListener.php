@@ -4,7 +4,7 @@ namespace Leo\WechatPush\Listener;
 
 use Flarum\Post\Event\Posted;
 use Leo\WechatPush\WechatPush;
-use Leo\WechatPush\Util\PushMsg;
+use Leo\WechatPush\Util\PushMsgUtil;
 
 class PostListener
 {
@@ -42,8 +42,8 @@ class PostListener
         ]);
         $wechat_push->save();
 
-        PushMsg::push("24006113632@chatroom", $content);
-        PushMsg::push("23935830943@chatroom", $content);
+        PushMsgUtil::push("24006113632@chatroom", $content);
+        PushMsgUtil::push("23935830943@chatroom", $content);
     }
 
     private function pushmsg($wxid, $msg)

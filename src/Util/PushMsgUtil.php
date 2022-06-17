@@ -1,7 +1,7 @@
 <?php
 namespace Leo\WechatPush\Util;
 
-class PushMsg
+class PushMsgUtil
 {
     public static function push($wxid, $msg)
     {
