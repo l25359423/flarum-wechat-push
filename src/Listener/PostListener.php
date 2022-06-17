@@ -35,15 +35,14 @@ class PostListener
                 $user_name, $discussion_title, strip_tags($discussion_content), $d_url);
         }
 
-        echo $content;
         $wechat_push = new WechatPush([
             "content" => $content,
             "url"  => $d_url
         ]);
         $wechat_push->save();
 
-//        $this->pushmsg("24006113632@chatroom", $content);
-//        $this->pushmsg("23935830943@chatroom", $content);
+        $this->pushmsg("24006113632@chatroom", $content);
+        $this->pushmsg("23935830943@chatroom", $content);
     }
 
     private function pushmsg($wxid, $msg)
