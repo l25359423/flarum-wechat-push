@@ -9,15 +9,15 @@ class WeiBoHotUtil
     private static $weatherURL = 'https://devapi.qweather.com/v7/weather/now';
     private static $getLocationURL = 'https://geoapi.qweather.com/v2/city/lookup';
     private static $key = '0a1acf9d2c7b458dbbdb41e8d9a2fef6';
-    public static function check($msg)
+    public static function check($content)
     {
-        return stristr($msg, "@钢镚儿") !== false && (stristr($msg, "微博热搜") !== false
-                || stristr($msg, "微博热门") !== false
-                || stristr($msg, "热门微博") !== false
-                || stristr($msg, "微博") !== false
-                || stristr($msg, "吃瓜") !== false
-                || stristr($msg, "热门") !== false
-                || stristr(strtolower($msg), "weibo") !== false);
+        return mb_substr($content, 0, 4) == "@钢镚儿" && (stristr($content, "微博热搜") !== false
+                || stristr($content, "微博热门") !== false
+                || stristr($content, "热门微博") !== false
+                || stristr($content, "微博") !== false
+                || stristr($content, "吃瓜") !== false
+                || stristr($content, "热门") !== false
+                || stristr(strtolower($content), "weibo") !== false);
     }
     public static function query()
     {
