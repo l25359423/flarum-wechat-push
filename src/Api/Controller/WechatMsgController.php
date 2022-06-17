@@ -24,7 +24,10 @@ class WechatMsgController extends AbstractListController
 
         if(stristr($msg, "@钢镚儿") !== false && (stristr($msg, "微博热搜") !== false
             || stristr($msg, "微博热门") !== false
+                || stristr($msg, "热门微博") !== false
             || stristr($msg, "微博") !== false
+            || stristr($msg, "吃瓜") !== false
+            || stristr($msg, "热门") !== false
             || stristr(strtolower($msg), "weibo") !== false)) {
             $weibo_top = file_get_contents(base_path() . "/weibo-hot/hot.json");
             if($weibo_top){
