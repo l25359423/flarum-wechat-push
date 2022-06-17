@@ -10,7 +10,7 @@ class PostListener
     public function handle(Posted $event)
     {
         $data = json_decode(json_encode($event), true);
-        echo json_encode($data);
+
         $user_name = $data['post']['user']['nickname']
             ? : $data['post']['user']['username'];
         $discussion_id = $data['post']['discussion']['id'];
