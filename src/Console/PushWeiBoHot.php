@@ -1,62 +1,32 @@
 <?php
 
-namespace Leo\DailyMusic\Console;
+namespace Leo\WechatPush\Console;
 
 use Flarum\Console\AbstractCommand;
-use Maicol07\Flarum\Api\Client;
-use Leo\DailyMusic\Model\DailyMusic;
+use Leo\WechatPush\Util\PushMsgUtil;
+use Leo\WechatPush\Util\WeiBoHotUtil;
 
-class PostMusic extends AbstractCommand
+class PushWeiBoHot extends AbstractCommand
 {
+    protected $room_wxids = array(
+        "91217048@chatroom", // family
+        "24006113632@chatroom", // Battle-Ares
+        "23935830943@chatroom", // Share Baby
+    );
     protected function configure()
     {
         $this
-            ->setName('leo:postmusic')
-            ->setDescription('post music');
+            ->setName('leo:pushwbhot')
+            ->setDescription('push wbhot');
     }
 
     protected function fire()
     {
-        $config = app('flarum.config');
-        $url = (string)$config->url();
-        $query = DailyMusic::query();
-        $music = $query->where("released", 0)->orderBy("id", "asc")->limit(1)->get();
-
-        if($music->isEmpty()){
-            return false;
+        $reply_content = WeiBoHotUtil::query();
+        $reply_content = sprintf("早上好[太阳]，为你送上今日热点：\n\n%s", $reply_content);
+        foreach ($this->room_wxids as $room_wxid){
+            PushMsgUtil::push($room_wxid, $reply_content);
         }
-        $music = $music[0];
-
-        $api = new Client($url, ['token' => 'zhewvzlxzfgxhjnzyhfujicmyvsngmxc; userId=1']);
-
-        $curl = curl_init();
-
-        $request_data = [
-            'attributes' => [
-                'title'   => $music->title,
-                'content' => sprintf("%s\n%s", $music->title, $music->url),
-            ],
-            'relationships' => [
-                'tags' => [
-                    'data' => [
-                        [
-                            'type' => 'tags',
-                            'id'   => '5'
-                        ]
-                    ]
-                ]
-            ],
-            'type' => 'discussions'
-        ];
-
-        try {
-            $response = $api->discussions()->post($request_data)->request();
-            $music->released = 1;
-            $music->save();
-        } catch (\Exception $e) {
-            echo $e->getMessage();
-        }
-
         // See https://docs.flarum.org/extend/console.html#console and
         // https://symfony.com/doc/current/console.html#configuring-the-command for more information.
     }

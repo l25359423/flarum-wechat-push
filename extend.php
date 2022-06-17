@@ -13,6 +13,7 @@ namespace Leo\WechatPush;
 
 use Flarum\Extend;
 use Leo\WechatPush\Api\Controller;
+use Leo\WechatPush\Console;
 
 return [
     (new Extend\Csrf())
@@ -22,5 +23,7 @@ return [
     (new Extend\Routes('api'))
         ->post('/wechat-msg', 'wechat_msg', Controller\WechatMsgController::class),
     (new Extend\Frontend('forum'))
-        ->route('/weibo/{title_md5}', 'weibo_hot', Controller\WeiboHotRedirectController::class)
+        ->route('/weibo/{title_md5}', 'weibo_hot', Controller\WeiboHotRedirectController::class),
+    (new Extend\Console())
+        ->command(Console\PushWeiBoHot::class),
 ];
