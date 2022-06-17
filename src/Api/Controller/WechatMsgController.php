@@ -57,7 +57,7 @@ class WechatMsgController extends AbstractListController
         }
 
         // 默认回复
-        if(stristr($msg, "@钢镚儿") !== false){
+        if(mb_substr($msg, 0, 4) == "@钢镚儿"){
             PushMsgUtil::push($room_wxid, $default_reply_content);
         }
 
