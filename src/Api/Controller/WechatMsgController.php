@@ -30,7 +30,7 @@ class WechatMsgController extends AbstractListController
         if($msgText=='功能'){
             $reply_content = "1. 热门微博(每小时更新一次)，示例：\n@钢镚儿 热门微博\n\n".
                 "2. 查询天气，示例：\n@钢镚儿 北京天气怎么样\n\n".
-                "3. 金额转大写，示例：\n@钢镚儿 金额转大写：1111.23";
+                "3. 金额转大写，示例：\n@钢镚儿 金额转大写：1111.23\n\n不断努力开发中...";
             PushMsgUtil::push($room_wxid, $reply_content);
             die;
         }
