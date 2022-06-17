@@ -23,7 +23,7 @@ class PushWeiBoHot extends AbstractCommand
     protected function fire()
     {
         $reply_content = WeiBoHotUtil::query();
-        $reply_content = sprintf("早上好[太阳]，为你送上今日热点：\n\n%s", $reply_content);
+        $reply_content = sprintf("早上好~ [太阳][太阳][太阳]，今日微博热点：\n\n%s", $reply_content);
         foreach ($this->room_wxids as $room_wxid){
             PushMsgUtil::push($room_wxid, $reply_content);
         }
