@@ -16,6 +16,6 @@ class HongBaoUtil
         $config = app('flarum.config');
         $root_url = (string)$config->url();
         $waimai_url = $root_url . "/waimai";
-        return sprintf("点击下方链接领取美团饿了么外卖红包，最高可领66元，快去领取红包开启干饭模式吧[坏笑]~\n\n%s", $waimai_url);
+        return sprintf("先领红包再干饭，既省钱来又划算，点击下方链接领取美团饿了么外卖红包，最高可领66元[红包][红包][红包]~\n\n%s", $waimai_url);
     }
 }
