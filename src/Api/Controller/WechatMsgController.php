@@ -30,13 +30,6 @@ class WechatMsgController extends AbstractListController
             die;
         }
 
-        $reply_content = QingYunUtil::query($msg);
-        if($reply_content){
-            PushMsgUtil::push($room_wxid, "@黄二狗 " . $reply_content);
-            die;
-        }
-        die;
-
         // 功能罗列
         $msgText = trim(explode("@钢镚儿", $msg)[1]);
         if($msgText=='功能'){
