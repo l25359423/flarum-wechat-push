@@ -10,6 +10,7 @@ use Leo\WechatPush\Util\WeatherUtil;
 use Leo\WechatPush\WeiboHot;
 use Leo\WechatPush\Util\WeiBoHotUtil;
 use Leo\WechatPush\Util\CoverToUpperUtil;
+use Leo\WechatPush\Util\HongBaoUtil;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
 use Illuminate\Contracts\Bus\Dispatcher;
@@ -40,8 +41,15 @@ class WechatMsgController extends AbstractListController
             die;
         }
 
+        // 外卖红包
+        if(HongBaoUtil::check($msg)){
+            $reply_content = HongBaoUtil::query($msg);
+            PushMsgUtil::push($room_wxid, $reply_content);
+            die;
+        }
+
         // 热门微博
-        if(WeiBoHotUtil::check($msg)) {
+        if(WeiBoHotUtil::check($msg)){
             $reply_content = WeiBoHotUtil::query();
             PushMsgUtil::push($room_wxid, $reply_content);
             die;

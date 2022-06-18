@@ -14,6 +14,7 @@ namespace Leo\WechatPush;
 use Flarum\Extend;
 use Leo\WechatPush\Api\Controller;
 use Leo\WechatPush\Console;
+use Leo\WechatPush\Forum\Controller as ForumController;
 
 return [
     (new Extend\Csrf())
@@ -26,4 +27,8 @@ return [
         ->route('/weibo/{title_md5}', 'weibo_hot', Controller\WeiboHotRedirectController::class),
     (new Extend\Console())
         ->command(Console\PushWeiBoHot::class),
+    (new Extend\Routes('forum'))
+        ->get('/waimai', 'waimai', ForumController\WaiMaiController::class),
+    (new Extend\View())
+        ->namespace('leo.waimai', __DIR__.'/resources/views'),
 ];
