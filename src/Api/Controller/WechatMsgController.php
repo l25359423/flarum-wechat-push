@@ -26,6 +26,13 @@ class WechatMsgController extends AbstractListController
         $room_wxid = $data['data']['room_wxid'];
         $default_reply_content = "哎呀，你说的这个钢镚儿似乎还不太懂，你可以告诉舒克大大，让他来教教我~";
 
+        $reply_content = QingYunUtil::query($msg);
+        if($reply_content){
+            PushMsgUtil::push($room_wxid, "@黄二狗 " . $reply_content);
+            die;
+        }
+        die;
+
         if(mb_substr($msg, 0, 4) != "@钢镚儿") {
             die;
         }
