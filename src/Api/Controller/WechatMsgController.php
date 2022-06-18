@@ -5,6 +5,7 @@ namespace Leo\WechatPush\Api\Controller;
 use Flarum\Api\Controller\AbstractListController;
 use Leo\WechatPush\City;
 use Leo\WechatPush\Util\PushMsgUtil;
+use Leo\WechatPush\Util\QingYunUtil;
 use Leo\WechatPush\Util\WeatherUtil;
 use Leo\WechatPush\WeiboHot;
 use Leo\WechatPush\Util\WeiBoHotUtil;
@@ -24,6 +25,10 @@ class WechatMsgController extends AbstractListController
         $msg = $data['data']['msg'];
         $room_wxid = $data['data']['room_wxid'];
         $default_reply_content = "哎呀，你说的这个钢镚儿似乎还不太懂，你可以告诉舒克大大，让他来教教我~";
+
+        if(mb_substr($msg, 0, 4) != "@钢镚儿") {
+            die;
+        }
 
         // 功能罗列
         $msgText = trim(explode("@钢镚儿", $msg)[1]);
@@ -54,6 +59,15 @@ class WechatMsgController extends AbstractListController
             $reply_content = CoverToUpperUtil::query($msg);
             PushMsgUtil::push($room_wxid, $reply_content);
             die;
+        }
+
+        // 青云智能回复
+        if(QingYunUtil::check($msg)){
+            $reply_content = QingYunUtil::query($msg);
+            if($reply_content){
+                PushMsgUtil::push($room_wxid, $reply_content);
+                die;
+            }
         }
 
         // 默认回复
