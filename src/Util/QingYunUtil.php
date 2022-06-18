@@ -12,7 +12,8 @@ class QingYunUtil
     {
         $msg = trim(explode("@钢镚儿", $msg)[1]);
         $reply_content = self::request($msg);
-        var_dump($reply_content);
+        $reply_content = str_replace("菲菲", "钢镚儿", $reply_content);
+        $reply_content = str_replace("{br}", "\n", $reply_content);
         return $reply_content['content'] ? : "";
     }
 
