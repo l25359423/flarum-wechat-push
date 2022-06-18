@@ -62,13 +62,13 @@ class WechatMsgController extends AbstractListController
         }
 
         // 青云智能回复
-        if(QingYunUtil::check($msg)){
-            $reply_content = QingYunUtil::query($msg);
-            if($reply_content){
-                PushMsgUtil::push($room_wxid, $reply_content);
-                die;
-            }
-        }
+//        if(QingYunUtil::check($msg)){
+//            $reply_content = QingYunUtil::query($msg);
+//            if($reply_content){
+//                PushMsgUtil::push($room_wxid, $reply_content);
+//                die;
+//            }
+//        }
 
         // 默认回复
         if(mb_substr($msg, 0, 4) == "@钢镚儿"){
