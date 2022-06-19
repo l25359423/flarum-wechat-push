@@ -21,7 +21,7 @@ class WeiBoHotUtil
     }
     public static function query()
     {
-        $reply_content = "";
+        $reply_content = "💥微博热搜（每十分钟更新一次）\n\n";
         $weibo_top = file_get_contents(base_path() . "/weibo-hot/hot.json");
         if($weibo_top){
             $weibo_top = json_decode($weibo_top, true);
