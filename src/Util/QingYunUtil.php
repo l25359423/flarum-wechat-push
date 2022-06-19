@@ -5,12 +5,11 @@ class QingYunUtil
 {
     public static function check($msg)
     {
-        return mb_substr($msg, 0, 4) == "@钢镚儿";
+        return true;
     }
 
     public static function query($msg)
     {
-        $msg = trim(explode("@钢镚儿", $msg)[1]);
         $reply_content = self::request($msg);
         $reply_content = str_replace("菲菲", "钢镚儿", $reply_content);
         $reply_content = str_replace("{br}", "\n", $reply_content);

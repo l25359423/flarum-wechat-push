@@ -11,6 +11,7 @@ use Leo\WechatPush\WeiboHot;
 use Leo\WechatPush\Util\WeiBoHotUtil;
 use Leo\WechatPush\Util\CoverToUpperUtil;
 use Leo\WechatPush\Util\HongBaoUtil;
+use Leo\WechatPush\Util\ConstellationUtil;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
 use Illuminate\Contracts\Bus\Dispatcher;
@@ -31,13 +32,15 @@ class WechatMsgController extends AbstractListController
             die;
         }
 
+        $msg = str_replace(" ", "", trim(explode("@钢镚儿", $msg)[1]));
+
         // 功能罗列
-        $msgText = str_replace(" ", "", trim(explode("@钢镚儿", $msg)[1]));
-        if($msgText=='功能'){
+        if($msg=='功能'){
             $reply_content = "1. 外卖红包领取，示例：\n@钢镚儿 外卖红包\n@钢镚儿 美团\n@钢镚儿 饿了么\n\n".
                 "2. 热门微博(每小时更新一次)，示例：\n@钢镚儿 热门微博\n\n".
-                "3. 查询天气，示例：\n@钢镚儿 北京天气怎么样\n\n".
-                "4. 金额转大写，示例：\n@钢镚儿 金额转大写：1111.23\n\n舒克大大没日没夜的开发中...";
+                "3. 星座运势，示例：\n@钢镚儿 金牛座\n\n".
+                "4. 查询天气，示例：\n@钢镚儿 北京天气怎么样\n\n".
+                "5. 金额转大写，示例：\n@钢镚儿 金额转大写：1111.23\n\n舒克大大没日没夜的开发中...";
             PushMsgUtil::push($room_wxid, $reply_content);
             die;
         }
@@ -66,6 +69,13 @@ class WechatMsgController extends AbstractListController
         // 金钱转大写
         if(CoverToUpperUtil::check($msg)){
             $reply_content = CoverToUpperUtil::query($msg);
+            PushMsgUtil::push($room_wxid, $reply_content);
+            die;
+        }
+
+        // 星座运势
+        if(ConstellationUtil::check($msg)){
+            $reply_content = ConstellationUtil::query($msg);
             PushMsgUtil::push($room_wxid, $reply_content);
             die;
         }

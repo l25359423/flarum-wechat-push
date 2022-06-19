@@ -11,13 +11,13 @@ class WeiBoHotUtil
     private static $key = '0a1acf9d2c7b458dbbdb41e8d9a2fef6';
     public static function check($content)
     {
-        return mb_substr($content, 0, 4) == "@钢镚儿" && (stristr($content, "微博热搜") !== false
+        return stristr($content, "微博热搜") !== false
                 || stristr($content, "微博热门") !== false
                 || stristr($content, "热门微博") !== false
                 || stristr($content, "微博") !== false
                 || stristr($content, "吃瓜") !== false
                 || stristr($content, "热门") !== false
-                || stristr(strtolower($content), "weibo") !== false);
+                || stristr(strtolower($content), "weibo") !== false;
     }
     public static function query()
     {
