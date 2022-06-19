@@ -45,6 +45,18 @@ class WechatMsgController extends AbstractListController
             die;
         }
 
+        // 网址
+        if(stristr("网址", $msg) !== false
+            || stristr("网址", $msg) !== false
+            || stristr("share", strtolower($msg)) !== false
+            || stristr("sharebaby", strtolower($msg)) !== false
+            || stristr("资源分享", $msg) !== false
+            || stristr("分享资源", $msg) !== false
+            || stristr("分享", $msg) !== false){
+            PushMsgUtil::push($room_wxid, "https://www.sharebaby.cn");
+            die;
+        }
+
         // 外卖红包
         if(HongBaoUtil::check($msg)){
             $reply_content = HongBaoUtil::query($msg);
