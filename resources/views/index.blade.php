@@ -10,7 +10,7 @@
 </body>
 <script>
 function waimai_jump(){
-    location.href = "http://dpurl.cn/r1LTnxlz";
+    location.href = "http://dpurl.cn/ymcz2l2z";
 }
 </script>
 </html>
