@@ -31,7 +31,7 @@ class ConstellationUtil
             $arr = json_decode($json, true);
             $reply_content .= sprintf("💗%s💗\n\n", $content);
             foreach ($arr as $key => $val){
-                $reply_content .= sprintf("%s: %s%s\n\n",
+                $reply_content .= sprintf("♊%s: %s%s\n\n",
                     $key, $val['star'],
                     ($val['text'] ? "\n" . $val['text'] : ""));
             }
