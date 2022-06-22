@@ -13,7 +13,7 @@ class EatWhatUtil
     public static function query()
     {
         $query = MeiTuanShop::query();
-        $shop = $query->where("distance", "<", 2000)
+        $shop = $query->where("distance", "<", 1000)
             ->orderByRaw("rand()")
             ->first();
         $distance = round($shop['distance']/1000, 1);
