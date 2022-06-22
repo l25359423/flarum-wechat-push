@@ -12,6 +12,7 @@ use Leo\WechatPush\Util\WeiBoHotUtil;
 use Leo\WechatPush\Util\CoverToUpperUtil;
 use Leo\WechatPush\Util\HongBaoUtil;
 use Leo\WechatPush\Util\ConstellationUtil;
+use Leo\WechatPush\Util\EatWhatUtil;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
 use Illuminate\Contracts\Bus\Dispatcher;
@@ -88,6 +89,13 @@ class WechatMsgController extends AbstractListController
         // 星座运势
         if(ConstellationUtil::check($msg)){
             $reply_content = ConstellationUtil::query($msg);
+            PushMsgUtil::push($room_wxid, $reply_content);
+            die;
+        }
+
+        //今天中午吃什么
+        if(EatWhatUtil::check($msg)){
+            $reply_content = EatWhatUtil::query($msg);
             PushMsgUtil::push($room_wxid, $reply_content);
             die;
         }
