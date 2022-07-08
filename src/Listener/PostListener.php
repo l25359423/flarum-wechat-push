@@ -30,6 +30,7 @@ class PostListener
             $d_url = sprintf("%s/d/%d-%s", $url, $discussion_id, $discussion_slug);
             $content = sprintf("%s在《%s》板块发布了帖子：\n%s\n详情请点击下面的链接：\n%s",
                 $user_name, $discussion_tag, $discussion_title, $d_url);
+            $this->pushBaidu($d_url);
         } else {
             $d_url = sprintf("%s/d/%d-%s/%d", $url, $discussion_id, $discussion_slug, $last_post_number);
             $content = sprintf("%s在《%s》回复了帖子说：\n%s\n详情请点击下面的链接：\n%s",
@@ -42,8 +43,8 @@ class PostListener
         ]);
         $wechat_push->save();
 
-        PushMsgUtil::push("24006113632@chatroom", $content);
-        PushMsgUtil::push("23935830943@chatroom", $content);
+//        PushMsgUtil::push("24006113632@chatroom", $content);
+//        PushMsgUtil::push("23935830943@chatroom", $content);
     }
 
     private function pushmsg($wxid, $msg)
@@ -78,5 +79,23 @@ class PostListener
         $response = curl_exec($curl);
 
         curl_close($curl);
+    }
+
+    private function pushBaidu($url){
+        $urls = array(
+            $url
+        );
+        $api = 'http://data.zz.baidu.com/urls?site=https://www.sharebaby.cn&token=zZjh920mcdlIVLu7';
+        $ch = curl_init();
+        $options =  array(
+            CURLOPT_URL => $api,
+            CURLOPT_POST => true,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POSTFIELDS => implode("\n", $urls),
+            CURLOPT_HTTPHEADER => array('Content-Type: text/plain'),
+        );
+        curl_setopt_array($ch, $options);
+        $result = curl_exec($ch);
+        echo $result;
     }
 }
