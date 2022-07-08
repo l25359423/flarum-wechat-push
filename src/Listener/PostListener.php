@@ -30,7 +30,8 @@ class PostListener
             $d_url = sprintf("%s/d/%d-%s", $url, $discussion_id, $discussion_slug);
             $content = sprintf("%s在《%s》板块发布了帖子：\n%s\n详情请点击下面的链接：\n%s",
                 $user_name, $discussion_tag, $discussion_title, $d_url);
-            $this->pushBaidu($d_url);
+            $baiduRes = $this->pushBaidu($d_url);
+            $content .= sprintf("\n%s", $baiduRes);
         } else {
             $d_url = sprintf("%s/d/%d-%s/%d", $url, $discussion_id, $discussion_slug, $last_post_number);
             $content = sprintf("%s在《%s》回复了帖子说：\n%s\n详情请点击下面的链接：\n%s",
@@ -96,6 +97,7 @@ class PostListener
         );
         curl_setopt_array($ch, $options);
         $result = curl_exec($ch);
-        echo $result;
+        $res = json_encode($result);
+        return $res['success'] == 1 ? "已成功推送到百度" : $result;
     }
 }
