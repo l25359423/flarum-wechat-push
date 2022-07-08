@@ -44,8 +44,8 @@ class PostListener
         ]);
         $wechat_push->save();
 
-//        PushMsgUtil::push("24006113632@chatroom", $content);
-//        PushMsgUtil::push("23935830943@chatroom", $content);
+        PushMsgUtil::push("24006113632@chatroom", $content);
+        PushMsgUtil::push("23935830943@chatroom", $content);
     }
 
     private function pushmsg($wxid, $msg)
@@ -97,7 +97,7 @@ class PostListener
         );
         curl_setopt_array($ch, $options);
         $result = curl_exec($ch);
-        $res = json_encode($result);
+        $res = json_decode($result, true);
         return $res['success'] == 1 ? "已成功推送到百度" : $result;
     }
 }
