@@ -46,6 +46,7 @@ class PostListener
 
         PushMsgUtil::push("24006113632@chatroom", $content);
         PushMsgUtil::push("23935830943@chatroom", $content);
+        PushMsgUtil::push("91217048@chatroom", $content);
     }
 
     private function pushmsg($wxid, $msg)
