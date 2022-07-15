@@ -28,8 +28,8 @@ class PostListener
         if ($type == 'post')
         {
             $d_url = sprintf("%s/d/%d-%s", $url, $discussion_id, $discussion_slug);
-            $content = sprintf("%s在《%s》板块发布了帖子：\n%s\n详情请点击下面的链接：\n%s",
-                $user_name, $discussion_tag, $discussion_title, $d_url);
+            $content = sprintf("%s发布了帖子：\n%s\n详情请点击下面的链接：\n%s",
+                $user_name, $discussion_title, $d_url);
             $baiduRes = $this->pushBaidu($d_url);
             $content .= sprintf("\n%s", $baiduRes);
         } else {
