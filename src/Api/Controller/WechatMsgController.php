@@ -4,6 +4,7 @@ namespace Leo\WechatPush\Api\Controller;
 
 use Flarum\Api\Controller\AbstractListController;
 use Leo\WechatPush\City;
+use Leo\WechatPush\Util\CalendarUtil;
 use Leo\WechatPush\Util\PushMsgUtil;
 use Leo\WechatPush\Util\QingYunUtil;
 use Leo\WechatPush\Util\WeatherUtil;
@@ -89,6 +90,13 @@ class WechatMsgController extends AbstractListController
         // 星座运势
         if(ConstellationUtil::check($msg)){
             $reply_content = ConstellationUtil::query($msg);
+            PushMsgUtil::push($room_wxid, $reply_content);
+            die;
+        }
+
+        // 日历
+        if(CalendarUtil::check($msg)){
+            $reply_content = CalendarUtil::query($msg);
             PushMsgUtil::push($room_wxid, $reply_content);
             die;
         }

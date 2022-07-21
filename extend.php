@@ -27,7 +27,8 @@ return [
         ->route('/weibo/{title_md5}', 'weibo_hot', Controller\WeiboHotRedirectController::class),
     (new Extend\Console())
         ->command(Console\PushWeiBoHot::class)
-        ->command(Console\CrawlMeiTuanShop::class),
+        ->command(Console\CrawlMeiTuanShop::class)
+        ->command(Console\CrawlCalendar::class),
     (new Extend\Routes('forum'))
         ->get('/waimai', 'waimai', ForumController\WaiMaiController::class),
     (new Extend\View())
