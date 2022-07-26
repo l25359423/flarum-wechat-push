@@ -59,7 +59,7 @@ class WechatMsgController extends AbstractListController
         // 网址
         if(stristr("网址", $msg) !== false
             || stristr("网址", $msg) !== false
-            || stristr("share", strtolower($msg)) !== false
+//            || stristr("share", strtolower($msg)) !== false
             || stristr("sharebaby", strtolower($msg)) !== false
             || stristr("资源分享", $msg) !== false
             || stristr("分享资源", $msg) !== false
