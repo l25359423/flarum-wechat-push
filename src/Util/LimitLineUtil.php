@@ -13,9 +13,13 @@ class LimitLineUtil
     {
         $keywords = array(
             '昨天' => date('Y-m-d', strtotime('-1 day')),
+            '昨日' => date('Y-m-d', strtotime('-1 day')),
             '今天' => date('Y-m-d'),
+            '今日' => date('Y-m-d'),
             '明天' => date('Y-m-d', strtotime('+1 day')),
+            '明日' => date('Y-m-d', strtotime('+1 day')),
             '后天' => date('Y-m-d', strtotime('+2 day')),
+            '后日' => date('Y-m-d', strtotime('+2 day')),
         );
 
         $city = str_replace("限行", "", $msg);

@@ -45,6 +45,7 @@ class WechatMsgController extends AbstractListController
                 "💥. 星座运势，示例：\n@钢镚儿 金牛座\n\n".
                 "💥. 查询天气，示例：\n@钢镚儿 北京天气怎么样\n\n".
                 "💥. 查询日历，示例：\n@钢镚儿 日历\n\n".
+                "💥. 查询限行，示例：\n@钢镚儿 北京限行 | 北京明天限行\n\n".
                 "💥. 金额转大写，示例：\n@钢镚儿 金额转大写：1111.23\n\n舒克大大没日没夜的开发中...";
             PushMsgUtil::push($room_wxid, $reply_content);
             die;
