@@ -30,11 +30,14 @@ class LimitLineUtil
         }
         $cityPinyin = Pinyin::permalink($city, '');
 
-        $res = self::getXX($cityPinyin, $dateStr);
+        $res = self::getXX($cityPinyin, $date);
 
         if($res['status']===0){
-            $reply_content = sprintf("限行尾号：%s\n限行时间：%s\n%s",
-                $res['result']['number'], implode(", ", $res['result']['time']), $res['result']['numberrule']);
+            $reply_content = sprintf("限行日期：%s\n限行尾号：%s\n限行时间：%s\n%s",
+                $date,
+                $res['result']['number'],
+                implode(", ", $res['result']['time']),
+                $res['result']['numberrule']);
         } else {
             $reply_content = $res['msg'];
         }
