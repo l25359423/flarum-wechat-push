@@ -32,9 +32,12 @@ class WechatMsgController extends AbstractListController
 
         $default_reply_content = "哎呀，你说的这个钢镚儿似乎还不太懂，你可以告诉舒克大大，让他来教教我~";
 
-        if(mb_substr($msg, 0, 4) != "@钢镚儿") {
+        if($data['data']['from_wxid'] == 'yuzhe5') {
             die;
         }
+//        if(mb_substr($msg, 0, 4) != "@钢镚儿") {
+//            die;
+//        }
         if(mb_substr($msg, 0, 4) == "@钢镚儿") {
             $msg = str_replace(" ", "", trim(explode("@钢镚儿", $msg)[1]));
         }
