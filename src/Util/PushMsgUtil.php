@@ -15,6 +15,18 @@ class PushMsgUtil
                     "content" => $msg
                 )
             );
+        }else if($type=='link'){
+            $request_data = array(
+                "client_id" => 1,
+                "type" => "MT_SEND_LINKMSG",
+                "data" => array(
+                    "to_wxid" => $wxid,
+                    "title" => $msg['title'],
+                    "desc" => $msg['desc'],
+                    "url" => $msg['url'],
+                    "image_url" => $msg['imageURL'],
+                )
+            );
         }else{
             $request_data = array(
                 "client_id" => 1,

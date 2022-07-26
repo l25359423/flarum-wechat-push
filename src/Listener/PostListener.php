@@ -32,10 +32,24 @@ class PostListener
                 $user_name, $discussion_title, $d_url);
             $baiduRes = $this->pushBaidu($d_url);
             $content .= sprintf("\n%s", $baiduRes);
+            $pushData = array(
+                "title" => $discussion_title,
+                "desc" => $user_name . "在《".$discussion_tag."》板块发布了帖子, 详情请点击此链接查看",
+                "url" => $d_url,
+                "imageURL" => "https://www.sharebaby.cn/assets/logo-llsrkacf.png"
+            );
         } else {
             $d_url = sprintf("%s/d/%d-%s/%d", $url, $discussion_id, $discussion_slug, $last_post_number);
             $content = sprintf("%s在《%s》回复了帖子说：\n%s\n详情请点击下面的链接：\n%s",
                 $user_name, $discussion_title, strip_tags($discussion_content), $d_url);
+            $pushData = array(
+                "title" => strip_tags($discussion_content),
+                "desc" => sprintf("%s在《%s》回复了帖子, 详情请点击此链接查看",
+                    $user_name,
+                    $discussion_title),
+                "url" => $d_url,
+                "imageURL" => "https://www.sharebaby.cn/assets/logo-llsrkacf.png"
+            );
         }
 
         $wechat_push = new WechatPush([
@@ -44,9 +58,11 @@ class PostListener
         ]);
         $wechat_push->save();
 
-        PushMsgUtil::push("24006113632@chatroom", $content);
-        PushMsgUtil::push("23935830943@chatroom", $content);
-        PushMsgUtil::push("91217048@chatroom", $content);
+
+        PushMsgUtil::push("24006113632@chatroom", $pushData, "link");
+        PushMsgUtil::push("23935830943@chatroom", $pushData, "link");
+        PushMsgUtil::push("91217048@chatroom", $pushData, "link");
+//        PushMsgUtil::push("25344621039@chatroom", $pushData, "link");
     }
 
     private function pushmsg($wxid, $msg)
