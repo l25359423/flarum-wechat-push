@@ -36,6 +36,9 @@ class WechatMsgController extends AbstractListController
         if($data['data']['from_wxid'] == 'yuzhe5') {
             die;
         }
+        if(!$msg && $msg !== 0 && $msg !== "0") {
+            die;
+        }
 //        if(mb_substr($msg, 0, 4) != "@钢镚儿") {
 //            die;
 //        }
@@ -59,7 +62,7 @@ class WechatMsgController extends AbstractListController
         // 网址
         if(stristr("网址", $msg) !== false
             || stristr("网址", $msg) !== false
-//            || stristr("share", strtolower($msg)) !== false
+            || stristr("share", strtolower($msg)) !== false
             || stristr("sharebaby", strtolower($msg)) !== false
             || stristr("资源分享", $msg) !== false
             || stristr("分享资源", $msg) !== false
