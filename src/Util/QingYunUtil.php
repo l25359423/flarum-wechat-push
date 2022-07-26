@@ -5,7 +5,7 @@ class QingYunUtil
 {
     public static function check($msg)
     {
-        return true;
+        return mb_substr($msg, 0, 4) == "@钢镚儿";
     }
 
     public static function query($msg)
