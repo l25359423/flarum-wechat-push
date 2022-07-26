@@ -14,6 +14,7 @@ use Leo\WechatPush\Util\CoverToUpperUtil;
 use Leo\WechatPush\Util\HongBaoUtil;
 use Leo\WechatPush\Util\ConstellationUtil;
 use Leo\WechatPush\Util\EatWhatUtil;
+use Leo\WechatPush\Util\LimitLineUtil;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
 use Illuminate\Contracts\Bus\Dispatcher;
@@ -28,14 +29,15 @@ class WechatMsgController extends AbstractListController
         $data = json_decode(file_get_contents("php://input"), true);
         $msg = $data['data']['msg'];
         $room_wxid = $data['data']['room_wxid'];
+
         $default_reply_content = "哎呀，你说的这个钢镚儿似乎还不太懂，你可以告诉舒克大大，让他来教教我~";
 
-        if(mb_substr($msg, 0, 4) != "@钢镚儿") {
-            die;
+//        if(mb_substr($msg, 0, 4) != "@钢镚儿") {
+//            die;
+//        }
+        if(mb_substr($msg, 0, 4) == "@钢镚儿") {
+            $msg = str_replace(" ", "", trim(explode("@钢镚儿", $msg)[1]));
         }
-
-        $msg = str_replace(" ", "", trim(explode("@钢镚儿", $msg)[1]));
-
         // 功能罗列
         if($msg=='功能'){
             $reply_content = "💥. 外卖红包领取，示例：\n@钢镚儿 外卖红包\n@钢镚儿 美团\n@钢镚儿 饿了么\n\n".
@@ -98,6 +100,13 @@ class WechatMsgController extends AbstractListController
         // 日历
         if(CalendarUtil::check($msg)){
             $reply_content = CalendarUtil::query($msg);
+            PushMsgUtil::push($room_wxid, $reply_content);
+            die;
+        }
+
+        // 限行
+        if(LimitLineUtil::check($msg)){
+            $reply_content = LimitLineUtil::query($msg);
             PushMsgUtil::push($room_wxid, $reply_content);
             die;
         }

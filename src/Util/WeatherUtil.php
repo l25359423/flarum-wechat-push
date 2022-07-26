@@ -51,7 +51,7 @@ class WeatherUtil
             }
         }
         if(!$reply_msg){
-            $reply_msg = "想问天气的话，可以这样问，例如：\n, 北京市天气怎么样？";
+            $reply_msg = "想问天气的话，可以这样问，例如：\n 北京市天气怎么样？";
         }
         return $reply_msg;
     }

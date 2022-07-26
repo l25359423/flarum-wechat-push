@@ -3,16 +3,28 @@ namespace Leo\WechatPush\Util;
 
 class PushMsgUtil
 {
-    public static function push($wxid, $msg)
+    public static function push($wxid, $msg, $type='content')
     {
-        $request_data = array(
-            "client_id" => 1,
-            "type" => "MT_SEND_TEXTMSG",
-            "data" => array(
-                "to_wxid" => $wxid,
-                "content" => $msg
-            )
-        );
+
+        if($type=='content'){
+            $request_data = array(
+                "client_id" => 1,
+                "type" => "MT_SEND_TEXTMSG",
+                "data" => array(
+                    "to_wxid" => $wxid,
+                    "content" => $msg
+                )
+            );
+        }else{
+            $request_data = array(
+                "client_id" => 1,
+                "type" => "MT_SEND_XMLMSG",
+                "data" => array(
+                    "to_wxid" => $wxid,
+                    "xml" => $msg
+                )
+            );
+        }
 
         $curl = curl_init();
 
@@ -33,7 +45,6 @@ class PushMsgUtil
         ));
 
         $response = curl_exec($curl);
-
         curl_close($curl);
     }
 }
