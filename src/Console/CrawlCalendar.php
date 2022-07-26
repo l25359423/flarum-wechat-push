@@ -14,7 +14,7 @@ class CrawlCalendar extends AbstractCommand
     protected function configure()
     {
         $this
-            ->setName('leo:crawl-calendar')
+            ->setName('leo:crawlcalendar')
             ->setDescription('crawl-calendar');
     }
 
