@@ -34,7 +34,7 @@ class PostListener
             $content .= sprintf("\n%s", $baiduRes);
             $pushData = array(
                 "title" => $discussion_title,
-                "desc" => $user_name . "在《".$discussion_tag."》板块发布了帖子, 详情请点击此链接查看",
+                "desc" => $user_name . "发布了帖子, 详情请点击此链接查看",
                 "url" => $d_url,
                 "imageURL" => "https://www.sharebaby.cn/assets/logo-llsrkacf.png"
             );
