@@ -8,8 +8,13 @@ class ShareMusicUtil
 {
     public static function check($content)
     {
-        return stristr($content, "歌曲") !== false ||
-            stristr($content, "音乐") !== false;
+        $keywords = ['分享歌曲', '分享音乐', '推荐歌曲', '推荐音乐'];
+        foreach ($keywords as $keyword){
+            if(stristr($content, $keyword) !== false){
+                return true;
+            }
+        }
+        return false;
     }
     public static function query()
     {

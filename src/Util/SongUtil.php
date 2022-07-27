@@ -6,7 +6,7 @@ class SongUtil
 {
     public static function check($content)
     {
-        return stristr($content, "点歌") !== false;
+        return mb_substr($content, 0, 2) == "点歌";
     }
     public static function query($content)
     {
