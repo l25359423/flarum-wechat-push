@@ -16,6 +16,7 @@ use Leo\WechatPush\Util\ConstellationUtil;
 use Leo\WechatPush\Util\EatWhatUtil;
 use Leo\WechatPush\Util\LimitLineUtil;
 use Leo\WechatPush\Util\ShareMusicUtil;
+use Leo\WechatPush\Util\SongUtil;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
 use Illuminate\Contracts\Bus\Dispatcher;
@@ -51,6 +52,7 @@ class WechatMsgController extends AbstractListController
                 "💥. 热门微博(每十分钟更新一次)，示例：\n@钢镚儿 热门微博\n\n".
                 "💥. 星座运势，示例：\n@钢镚儿 金牛座\n\n".
                 "💥. 今日推荐歌曲，示例：\n@钢镚儿 推荐歌曲 | 今日推荐歌曲\n\n".
+                "💥. 点歌，示例：\n@钢镚儿 点歌义勇军进行曲\n\n".
                 "💥. 查询天气，示例：\n@钢镚儿 北京天气怎么样\n\n".
                 "💥. 查询日历，示例：\n@钢镚儿 日历\n\n".
                 "💥. 查询限行，示例：\n@钢镚儿 北京限行 | 北京明天限行\n\n".
@@ -123,6 +125,18 @@ class WechatMsgController extends AbstractListController
         // 每日推荐歌曲
         if(ShareMusicUtil::check($msg)){
             $reply_content = ShareMusicUtil::query($msg);
+            PushMsgUtil::push($room_wxid, $reply_content, "xml");
+            die;
+        }
+
+        // 点歌
+        if(SongUtil::check($msg)){
+            $reply_content = SongUtil::query($msg);
+            if($reply_content === false){
+                $reply_content = "抱歉，没找到您想要的歌曲";
+                PushMsgUtil::push($room_wxid, $reply_content);
+                die;
+            }
             PushMsgUtil::push($room_wxid, $reply_content, "xml");
             die;
         }
