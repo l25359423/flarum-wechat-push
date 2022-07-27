@@ -24,7 +24,7 @@ class ShareMusicUtil
         $singer = explode("-", $title)[1];
         $url_components = parse_url($url);
         parse_str($url_components['query'], $params);
-        $songID = $params['id'];
+        $songID = trim($params['id']);
         $xml = "<msg>
             <appmsg appid=\"wx8dd6ecd81906fd84\" sdkver=\"0\">
             <title>%s</title>
