@@ -50,6 +50,7 @@ class WechatMsgController extends AbstractListController
         // 功能罗列
         if($msg=='功能'){
             $reply_content = "💥. 外卖红包领取，示例：\n@钢镚儿 外卖红包\n@钢镚儿 美团\n@钢镚儿 饿了么\n\n".
+                "💥. 资源搜索，示例：\n@钢镚儿 资源搜索梦华录 | 资源搜索：梦华录\n\n".
                 "💥. 热门微博(每十分钟更新一次)，示例：\n@钢镚儿 热门微博\n\n".
                 "💥. 星座运势，示例：\n@钢镚儿 金牛座\n\n".
                 "💥. 今日推荐歌曲，示例：\n@钢镚儿 推荐歌曲 | 今日推荐歌曲\n\n".
