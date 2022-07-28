@@ -34,14 +34,14 @@ class SearchDiscussionUtil
         foreach ($list as $item){
             $index+=1;
 
-            $reply_content .= sprintf("%s. %s\n", $index, $item->title);
+            $reply_content .= sprintf("%s. 《%s》\n", $index, $item->title);
             $tags = "";
             foreach ($item->tags as $tag){
                 $tags .= $tags == ""
                     ? $tag->attributes['name']
-                    : " / " . $tag->attributes['name'];
+                    : " -> " . $tag->attributes['name'];
             }
-            $reply_content .= sprintf("所在板块：<%s>\n", $tags);
+            $reply_content .= sprintf("所在板块：%s\n", $tags);
             $reply_content .= sprintf("资源链接：%s/d/%s\n\n",
                 $url, $item->slug);
 
@@ -49,7 +49,7 @@ class SearchDiscussionUtil
                 break;
             }
         }
-        $reply_content .= sprintf("查看更多资源请访问：\n");
+        $reply_content .= sprintf("查看更多有关<{$zyName}>的资源请访问：\n");
         $reply_content .= sprintf("%s?q=%s", $url, urlencode($zyName));
         return $reply_content;
     }
