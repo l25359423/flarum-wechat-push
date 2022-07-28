@@ -41,7 +41,7 @@ class SearchDiscussionUtil
                     ? $tag->attributes['name']
                     : " / " . $tag->attributes['name'];
             }
-            $reply_content .= sprintf("所在板块：%s\n", $tags);
+            $reply_content .= sprintf("所在板块：<%s>\n", $tags);
             $reply_content .= sprintf("资源链接：%s/d/%s\n\n",
                 $url, $item->slug);
 
