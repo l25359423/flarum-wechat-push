@@ -21,12 +21,13 @@ class SearchDiscussionUtil
         $list = $api->discussions()->filter(['q'=>$zyName])->request();
         try {
             $list = $list->collect()->toArray();
-        } catch (Exception $e){
-            $reply_content = "抱歉，没有找到有关{$zyName}的资源，请提交至以下链接或@舒克进行报备，找到资源后，我们会第一时间通知你。\nhttps://www.sharebaby.cn/d/92-wzdzy";
-            return $reply_content;
+        } catch (\Exception $e){
+            $list = "";
+        } catch (\Error $e){
+            $list = "";
         }
         if(!$list){
-            $reply_content = "抱歉，没有找到有关{$zyName}的资源，请提交至以下链接或@舒克进行报备，找到资源后，我们会第一时间通知你。\nhttps://www.sharebaby.cn/d/92-wzdzy";
+            $reply_content = "抱歉，没有找到有关{$zyName}的资源，请提交至以下链接: https://www.sharebaby.cn/d/92-wzdzy或@舒克进行报备，找到资源后，我们会第一时间通知你。";
             return $reply_content;
         }
         $reply_content = "下面是有关<{$zyName}>的资源：\n\n";
