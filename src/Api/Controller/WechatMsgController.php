@@ -17,6 +17,7 @@ use Leo\WechatPush\Util\EatWhatUtil;
 use Leo\WechatPush\Util\LimitLineUtil;
 use Leo\WechatPush\Util\ShareMusicUtil;
 use Leo\WechatPush\Util\SongUtil;
+use Leo\WechatPush\Util\SearchDiscussionUtil;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
 use Illuminate\Contracts\Bus\Dispatcher;
@@ -65,10 +66,7 @@ class WechatMsgController extends AbstractListController
         if(stristr("网址", $msg) !== false
             || stristr("网址", $msg) !== false
             || stristr("share", strtolower($msg)) !== false
-            || stristr("sharebaby", strtolower($msg)) !== false
-            || stristr("资源分享", $msg) !== false
-            || stristr("分享资源", $msg) !== false
-            || stristr("分享", $msg) !== false){
+            || stristr("sharebaby", strtolower($msg)) !== false){
             PushMsgUtil::push($room_wxid, "https://www.sharebaby.cn");
             die;
         }
@@ -138,6 +136,13 @@ class WechatMsgController extends AbstractListController
                 die;
             }
             PushMsgUtil::push($room_wxid, $reply_content, "xml");
+            die;
+        }
+
+        // 资源搜索
+        if(SearchDiscussionUtil::check($msg)){
+            $reply_content = SearchDiscussionUtil::query($msg);
+            PushMsgUtil::push($room_wxid, $reply_content);
             die;
         }
 
