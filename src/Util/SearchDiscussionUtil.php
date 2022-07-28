@@ -50,7 +50,7 @@ class SearchDiscussionUtil
             }
         }
         $reply_content .= sprintf("查看更多资源请访问：\n");
-        $reply_content .= sprintf("%s?q=%s", $url, $zyName);
+        $reply_content .= sprintf("%s?q=%s", $url, urlencode($zyName));
         return $reply_content;
     }
 }
