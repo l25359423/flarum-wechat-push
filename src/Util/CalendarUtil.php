@@ -7,9 +7,7 @@ class CalendarUtil
     public static function check($content)
     {
         return stristr($content, "日历") !== false
-                || stristr($content, "黄历") !== false
-                || stristr($content, "日期") !== false
-                || stristr($content, "运势") !== false;
+                || stristr($content, "黄历") !== false;
     }
     public static function query()
     {
