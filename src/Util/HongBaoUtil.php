@@ -5,10 +5,7 @@ class HongBaoUtil
 {
     public static function check($content)
     {
-        return stristr($content, '红包') !== false
-            || stristr($content, '外卖') !== false
-            || stristr($content, '美团') !== false
-            || stristr($content, '饿了么') !== false;
+        return stristr($content, '外卖红包') !== false;
     }
 
     public static function query($content)

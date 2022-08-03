@@ -18,6 +18,7 @@ use Leo\WechatPush\Util\LimitLineUtil;
 use Leo\WechatPush\Util\ShareMusicUtil;
 use Leo\WechatPush\Util\SongUtil;
 use Leo\WechatPush\Util\SearchDiscussionUtil;
+use Leo\WechatPush\Util\TackoutUtil;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
 use Illuminate\Contracts\Bus\Dispatcher;
@@ -30,14 +31,49 @@ class WechatMsgController extends AbstractListController
     protected function data(ServerRequestInterface $request, Document $document)
     {
         $data = json_decode(file_get_contents("php://input"), true);
-        $msg = $data['data']['msg'];
-        $room_wxid = $data['data']['room_wxid'];
+        $msg = isset($data['data']['msg']) ? $data['data']['msg'] : "";
+        $raw_msg = isset($data['data']['raw_msg']) ? $data['data']['raw_msg'] : "";
+        $room_wxid = isset($data['data']['room_wxid']) ? $data['data']['room_wxid'] : "";
+        $from_wxid = isset($data['data']['from_wxid']) ? $data['data']['from_wxid'] : "";
+        $wxid = $room_wxid ? : $from_wxid;
+        $type = $data['type'];
+
+        if($from_wxid == 'yuzhe5') {
+            die;
+        }
 
         $default_reply_content = "哎呀，你说的这个钢镚儿似乎还不太懂，你可以告诉舒克大大，让他来教教我~";
 
-        if($data['data']['from_wxid'] == 'yuzhe5') {
+        if($type=="MT_RECV_OTHER_APP_MSG"){
+            $this->processAppMsg($msg, $raw_msg, $wxid, $type);
+
+        } else if($type=="MT_RECV_TEXT_MSG") {
+            $this->processContentMsg($msg, $raw_msg, $wxid, $type);
+        }
+
+        die;
+        return array("success" => true);
+    }
+
+    public function processAppMsg($msg, $raw_msg, $wxid, $type)
+    {
+        $obj = simplexml_load_string($raw_msg, 'SimpleXMLElement', LIBXML_NOCDATA);
+        $json = json_encode($obj);
+        $rawArr = json_decode($json, true);
+        if(!isset($rawArr['appinfo']) || !isset($rawArr['appinfo']['appname'])){
             die;
         }
+
+        if($rawArr['appinfo']['appname']=="美团"){
+            if(TackoutUtil::checkStep($wxid, "init")){
+                $reply_content = TackoutUtil::add($rawArr, $wxid, $raw_msg);
+                PushMsgUtil::push($wxid, $reply_content);
+            }
+        }
+    }
+
+    public function processContentMsg($msg, $raw_msg, $wxid, $type)
+    {
         if(!$msg && $msg !== 0 && $msg !== "0") {
             die;
         }
@@ -59,7 +95,7 @@ class WechatMsgController extends AbstractListController
                 "💥. 查询日历，示例：\n@钢镚儿 日历\n\n".
                 "💥. 查询限行，示例：\n@钢镚儿 北京限行 | 北京明天限行\n\n".
                 "💥. 金额转大写，示例：\n@钢镚儿 金额转大写：1111.23\n\n舒克大大没日没夜的开发中...";
-            PushMsgUtil::push($room_wxid, $reply_content);
+            PushMsgUtil::push($wxid, $reply_content);
             die;
         }
 
@@ -68,63 +104,63 @@ class WechatMsgController extends AbstractListController
             || stristr("网址", $msg) !== false
             || stristr("share", strtolower($msg)) !== false
             || stristr("sharebaby", strtolower($msg)) !== false){
-            PushMsgUtil::push($room_wxid, "https://www.sharebaby.cn");
+            PushMsgUtil::push($wxid, "https://www.sharebaby.cn");
             die;
         }
 
         // 外卖红包
         if(HongBaoUtil::check($msg)){
             $reply_content = HongBaoUtil::query($msg);
-            PushMsgUtil::push($room_wxid, $reply_content);
+            PushMsgUtil::push($wxid, $reply_content);
             die;
         }
 
         // 热门微博
         if(WeiBoHotUtil::check($msg)){
             $reply_content = WeiBoHotUtil::query();
-            PushMsgUtil::push($room_wxid, $reply_content);
+            PushMsgUtil::push($wxid, $reply_content);
             die;
         }
 
         // 查询天气
         if(WeatherUtil::check($msg)){
             $reply_content = WeatherUtil::query($msg);
-            PushMsgUtil::push($room_wxid, $reply_content);
+            PushMsgUtil::push($wxid, $reply_content);
             die;
         }
 
         // 金钱转大写
         if(CoverToUpperUtil::check($msg)){
             $reply_content = CoverToUpperUtil::query($msg);
-            PushMsgUtil::push($room_wxid, $reply_content);
+            PushMsgUtil::push($wxid, $reply_content);
             die;
         }
 
         // 星座运势
         if(ConstellationUtil::check($msg)){
             $reply_content = ConstellationUtil::query($msg);
-            PushMsgUtil::push($room_wxid, $reply_content);
+            PushMsgUtil::push($wxid, $reply_content);
             die;
         }
 
         // 日历
         if(CalendarUtil::check($msg)){
             $reply_content = CalendarUtil::query($msg);
-            PushMsgUtil::push($room_wxid, $reply_content);
+            PushMsgUtil::push($wxid, $reply_content);
             die;
         }
 
         // 限行
         if(LimitLineUtil::check($msg)){
             $reply_content = LimitLineUtil::query($msg);
-            PushMsgUtil::push($room_wxid, $reply_content);
+            PushMsgUtil::push($wxid, $reply_content);
             die;
         }
 
         // 每日推荐歌曲
         if(ShareMusicUtil::check($msg)){
             $reply_content = ShareMusicUtil::query($msg);
-            PushMsgUtil::push($room_wxid, $reply_content, "xml");
+            PushMsgUtil::push($wxid, $reply_content, "xml");
             die;
         }
 
@@ -133,24 +169,35 @@ class WechatMsgController extends AbstractListController
             $reply_content = SongUtil::query($msg);
             if($reply_content === false){
                 $reply_content = "抱歉，没找到您想要的歌曲";
-                PushMsgUtil::push($room_wxid, $reply_content);
+                PushMsgUtil::push($wxid, $reply_content);
                 die;
             }
-            PushMsgUtil::push($room_wxid, $reply_content, "xml");
+            PushMsgUtil::push($wxid, $reply_content, "xml");
             die;
         }
 
         // 资源搜索
         if(SearchDiscussionUtil::check($msg)){
             $reply_content = SearchDiscussionUtil::query($msg);
-            PushMsgUtil::push($room_wxid, $reply_content);
+            PushMsgUtil::push($wxid, $reply_content);
             die;
         }
 
         //今天中午吃什么
-        if(EatWhatUtil::check($msg)){
-            $reply_content = EatWhatUtil::query($msg);
-            PushMsgUtil::push($room_wxid, $reply_content);
+//        if(EatWhatUtil::check($msg)){
+//            $reply_content = EatWhatUtil::query($msg);
+//            PushMsgUtil::push($wxid, $reply_content);
+//            die;
+//        }
+
+        // 添加外卖餐厅
+        if(TackoutUtil::check($msg)){
+            $reply_content = TackoutUtil::query($msg, $wxid);
+            if(is_array($reply_content)){
+                PushMsgUtil::push($wxid, $reply_content[1], $reply_content[0]);
+            } else {
+                PushMsgUtil::push($wxid, $reply_content);
+            }
             die;
         }
 
@@ -158,17 +205,14 @@ class WechatMsgController extends AbstractListController
         if(QingYunUtil::check($msg)){
             $reply_content = QingYunUtil::query($msg);
             if($reply_content){
-                PushMsgUtil::push($room_wxid, $reply_content);
+                PushMsgUtil::push($wxid, $reply_content);
                 die;
             }
         }
 
         // 默认回复
         if(mb_substr($msg, 0, 4) == "@钢镚儿"){
-            PushMsgUtil::push($room_wxid, $default_reply_content);
+            PushMsgUtil::push($wxid, $default_reply_content);
         }
-
-        die;
-        return array("success" => true);
     }
 }
