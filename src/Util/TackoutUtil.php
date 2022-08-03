@@ -188,6 +188,7 @@ class TackoutUtil
         } else if (mb_substr($content, 0, 5) === "今天吃什么"){
             $content = str_replace("：", ":", $content);
             $query = TackoutMerchant::query();
+            $query->where("wxid", $wxid);
             if(stristr($content, "-") !== false){
                 $arr = explode("-", $content);
                 $parameters = $arr[1];
@@ -244,6 +245,7 @@ class TackoutUtil
             $reply_content = "商家已存在！";
             return $reply_content;
         }
+        $xml = preg_replace("/<fromusername>.*<\/fromusername>/", "<fromusername>yuzhe5</fromusername>", $xml);
         $ackoutMerchant = new TackoutMerchant([
             "title" => $title,
             "des" => $des,
