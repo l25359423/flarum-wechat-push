@@ -84,13 +84,14 @@ class TackoutUtil
                     array_fill(0, $item->taste, "⭐️")));
                 $reply_content .= sprintf("服务：%s\n", implode("",
                     array_fill(0, $item->service_attitude, "⭐️")));
+                $reply_content .= "\n";
 
             }
             $reply_content .= sprintf("\n共%s个商家\n\n", count($list));
             $reply_content .= "属性标记：外卖属性标记-{ID}-空调:1|价格:2|距离:3|辣度:4|排队:5|口感:5|服务:5\n";
             $reply_content .= "删除商家：外卖商家删除 {ID}\n";
             $reply_content .= "删除TAG：外卖Tag删除 {ID}\n";
-            $reply_content .= "标记TAG：外卖商家标记Tag-{ID}-面食 米饭 特辣（多个tag之间用空格隔开）\n";
+            $reply_content .= "标记TAG：外卖Tag标记-{ID}-面食 米饭 特辣（多个tag之间用空格隔开）\n";
             return $reply_content;
         } else if(stristr($content, "外卖商家删除") !== false) {
             $id = trim(str_replace("外卖商家删除", "", $content));
